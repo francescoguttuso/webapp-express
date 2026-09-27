@@ -1,9 +1,30 @@
 -- seed.sql
 -- Dati di esempio per il database games_db
 -- 5 giochi e 5 recensioni
-
+CREATE DATABASE games_db;
 USE games_db;
-
+CREATE TABLE `games` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `title` VARCHAR(255) NOT NULL,
+    `genre` VARCHAR(255) NOT NULL,
+    `console` VARCHAR(255) NOT NULL,
+    `image` VARCHAR(255) NOT NULL,
+    `description` TEXT NOT NULL,
+    `release_year` INT NOT NULL
+);
+CREATE TABLE `reviews`(
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `text` TEXT NOT NULL,
+    `rating` INT NOT NULL,
+    `game_id` INT NOT NULL
+);
+ALTER TABLE
+    `reviews` ADD CONSTRAINT `reviews_game_id_foreign` FOREIGN KEY(`game_id`) REFERENCES `games`(`id`);
+    
+  show table;
+  DESCRIBE games;
+  DESCRIBE reviews;
+  SHOW TABLES;
 INSERT INTO games
 (title, genre, console, image, description, release_year)
 VALUES
