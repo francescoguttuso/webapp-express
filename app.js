@@ -1,10 +1,11 @@
 import express from "express";
 import { connectDB } from "./db.js";
+import { env } from "./env.js";
 
 const connection = await connectDB();
 
 const app = express();
-const port = 3000;
+const port = env.SERVE_PORT;
 
 app.use(express.static("public"));
 
