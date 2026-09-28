@@ -17,10 +17,35 @@ app.get("/games", async (req, res) => {
 
 app.get("/games/:id", async (req, res) => {
   const id = req.params.id;
-  const [[result]] = await connection.query(`SELECT * FROM games WHERE ID=?`, [
-    id,
-  ]);
-  res.json(result);
+
+  const [results] = await connection.query(
+    `SELECT
+      games.*,
+      reviews.*
+    FROM games
+    JOIN reviews
+      ON games.id = reviews.game_id
+    WHERE games.id = ?`,
+    [id],
+  );
+
+  const reviews = results.map((result) => ({
+    text: result.text,
+    rating: result.rating,
+  }));
+
+  const game = {
+    id: results[0].id,
+    title: results[0].title,
+    genre: results[0].genre,
+    console: results[0].console,
+    image: results[0].image,
+    description: results[0].description,
+    release_year: results[0].release_year,
+    reviews: reviews,
+  };
+
+  res.json(game);
 });
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
