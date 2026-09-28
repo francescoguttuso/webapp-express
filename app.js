@@ -1,6 +1,7 @@
 import express from "express";
 import { connectDB } from "./db.js";
 import { env } from "./env.js";
+import { gamesRouter } from "./resources/games.js";
 
 const connection = await connectDB();
 
