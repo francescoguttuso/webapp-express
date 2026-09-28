@@ -9,6 +9,11 @@ app.use(express.static("public"));
 
 app.use("/games", gamesRouter);
 
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: "unexpected internal server error" });
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
