@@ -28,6 +28,15 @@ export const show = async (req, res) => {
     rating: result.rating,
   }));
 
+  const [averageResult] = await connection.query(
+    `
+  SELECT AVG(rating) AS average_rating
+  FROM reviews
+  WHERE game_id = ?
+  `,
+    [id],
+  );
+
   const game = {
     id: results[0].id,
     title: results[0].title,
@@ -36,6 +45,7 @@ export const show = async (req, res) => {
     image: results[0].image,
     description: results[0].description,
     release_year: results[0].release_year,
+    average_rating: averageResult[0].average_rating,
     reviews: reviews,
   };
 
