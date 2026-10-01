@@ -23,6 +23,7 @@ export const show = async (req, res) => {
   );
 
   const reviews = results.map((result) => ({
+    id: result.id,
     text: result.text,
     rating: result.rating,
   }));
