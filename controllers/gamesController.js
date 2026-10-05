@@ -9,10 +9,6 @@ export const index = async (req, res) => {
 export const show = async (req, res) => {
   const id = req.params.id;
 
-  export const storeReview = async (req, res) => {
-  const gameId = req.params.id;
-  const { text, rating } = req.body;
-
   const [results] = await connection.query(
     `
     SELECT
@@ -22,7 +18,7 @@ export const show = async (req, res) => {
     JOIN reviews
       ON games.id = reviews.game_id
     WHERE games.id = ?
-  `,
+    `,
     [id],
   );
 
@@ -34,10 +30,10 @@ export const show = async (req, res) => {
 
   const [averageResult] = await connection.query(
     `
-  SELECT AVG(rating) AS average_rating
-  FROM reviews
-  WHERE game_id = ?
-  `,
+    SELECT AVG(rating) AS average_rating
+    FROM reviews
+    WHERE game_id = ?
+    `,
     [id],
   );
 
@@ -54,4 +50,22 @@ export const show = async (req, res) => {
   };
 
   res.json(game);
+};
+
+export const storeReview = async (req, res) => {
+  const gameId = req.params.id;
+  const { text, rating } = req.body;
+
+  const [result] = await connection.query(
+    `
+    INSERT INTO reviews
+    (text, rating, game_id)
+    VALUES (?, ?, ?)
+    `,
+    [text, rating, gameId],
+  );
+
+  res.status(201).json({
+    message: "Review created successfully",
+  });
 };
