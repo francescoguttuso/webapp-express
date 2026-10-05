@@ -9,24 +9,23 @@ export const index = async (req, res) => {
 export const show = async (req, res) => {
   const id = req.params.id;
 
-  const [results] = await connection.query(
+  const [games] = await connection.query(
     `
-    SELECT
-      games.*,
-      reviews.*
+    SELECT *
     FROM games
-    JOIN reviews
-      ON games.id = reviews.game_id
-    WHERE games.id = ?
+    WHERE id = ?
     `,
     [id],
   );
 
-  const reviews = results.map((result) => ({
-    id: result.id,
-    text: result.text,
-    rating: result.rating,
-  }));
+  const [reviews] = await connection.query(
+    `
+    SELECT id, text, rating
+    FROM reviews
+    WHERE game_id = ?
+    `,
+    [id],
+  );
 
   const [averageResult] = await connection.query(
     `
@@ -38,13 +37,13 @@ export const show = async (req, res) => {
   );
 
   const game = {
-    id: results[0].id,
-    title: results[0].title,
-    genre: results[0].genre,
-    console: results[0].console,
-    image: results[0].image,
-    description: results[0].description,
-    release_year: results[0].release_year,
+    id: games[0].id,
+    title: games[0].title,
+    genre: games[0].genre,
+    console: games[0].console,
+    image: games[0].image,
+    description: games[0].description,
+    release_year: games[0].release_year,
     average_rating: averageResult[0].average_rating,
     reviews: reviews,
   };
