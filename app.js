@@ -6,7 +6,7 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 const port = env.SERVE_PORT;
-
+app.use(express.json());
 app.use(express.static("public"));
 
 app.use("/games", gamesRouter);

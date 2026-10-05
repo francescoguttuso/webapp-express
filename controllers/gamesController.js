@@ -9,6 +9,10 @@ export const index = async (req, res) => {
 export const show = async (req, res) => {
   const id = req.params.id;
 
+  export const storeReview = async (req, res) => {
+  const gameId = req.params.id;
+  const { text, rating } = req.body;
+
   const [results] = await connection.query(
     `
     SELECT
